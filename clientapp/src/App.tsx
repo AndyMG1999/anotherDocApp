@@ -2,7 +2,7 @@ import Header from './general_components/Header';
 import { Routes,Route } from 'react-router';
 import HomePage from './pages/homePage/HomePage';
 import { Flex } from '@mantine/core';
-import DocViewPage from './pages/docViewPage/docViewPage';
+import DocViewPage from './pages/docViewPage/DocViewPage';
 
 function App() {
   return (
@@ -10,7 +10,7 @@ function App() {
      <Header/>
      <Routes>
       <Route path='/' element={<HomePage />} />
-      <Route path="/doc" element={<DocViewPage/>}/>
+      <Route path="/doc/:docid" element={<DocViewPage/>}/>
      </Routes>
     </Flex>
   )
