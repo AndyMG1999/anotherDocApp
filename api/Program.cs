@@ -1,7 +1,12 @@
+using api.Contexts;
+using api.Models;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddControllers();
+builder.Services.AddAuthorization();
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddEndpointsApiExplorer();
@@ -18,6 +23,11 @@ builder.Services.AddCors(options =>
         policy.AllowAnyHeader().AllowAnyMethod().AllowCredentials().WithOrigins("http://localhost:5173"));
 });
 
+// Configure your DbContext to use the in-memory database
+builder.Services.AddDbContext<DatabaseContext>(options =>
+    options.UseInMemoryDatabase("inMemoryDb"));
+builder.Services.AddIdentityApiEndpoints<DocUser>()
+    .AddEntityFrameworkStores<DatabaseContext>();
 
 var app = builder.Build();
 
@@ -49,8 +59,9 @@ app.MapGet("/weatherforecast", () =>
         .ToArray();
     return forecast;
 })
-.WithName("GetWeatherForecast");
+.WithName("GetWeatherForecast").RequireAuthorization();
 
+app.MapControllers();
 app.Run();
 
 record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
