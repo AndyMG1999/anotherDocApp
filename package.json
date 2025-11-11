@@ -1,0 +1,10 @@
+{
+  "name": "anotherdocapp-root",
+  "private": true,
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  },
+  "scripts": {
+    "dev": "concurrently \"cd clientapp && npm run dev\" \"cd api && dotnet watch run\""
+  }
+}
