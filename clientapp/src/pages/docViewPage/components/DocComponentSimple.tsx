@@ -2,18 +2,28 @@ import Highlight from '@tiptap/extension-highlight';
 import { useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import { RichTextEditor } from '@mantine/tiptap';
+import { useMemo } from 'react';
 import '@mantine/core/styles.css';
 // ‼️ import tiptap styles after core package styles
 import '@mantine/tiptap/styles.css';
 import '@mantine/core/styles.css';
+import {debounceFunc} from "../../../../services/delayServices";
 
 const content = '<p>Subtle rich text editor variant</p>';
+const saveTimer = 1200; //eg 3000 is 3 seconds
+const HandleChange = (editorText:string):void => {
+  console.log("Now Saving!",editorText);
+}
+const debounceHandleChange = debounceFunc(HandleChange,saveTimer)
 
 const DocComponentSimple = () => {
   const editor = useEditor({
     shouldRerenderOnTransaction: true,
     extensions: [StarterKit, Highlight],
     content,
+    onUpdate(props) {
+      debounceHandleChange(props.editor.getHTML());
+    },
   });
   
   return (
