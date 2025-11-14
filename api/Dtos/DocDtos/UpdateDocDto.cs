@@ -2,17 +2,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using api.Dtos.DocDtos;
 
-namespace api.Models
+namespace api.Dtos.DocDtos
 {
-    public class Document
+    public class UpdateDocDto
     {
         public Guid Id { get; set; }
         public string Name { get; set; } = "";
         public string Content { get; set; } = "";
-        public DocUser? OwnedBy { get; set; }
-        public DateTime DateCreated { get; set; }
-        public DateTime LastEdit { get; set; }
+        // public DocOwnerDto? OwnedBy { get; set; }
+        // public DateTime DateCreated { get; set; }
+        // public DateTime LastEdit { get; set; }
     }
 }
