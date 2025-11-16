@@ -1,23 +1,39 @@
-import { Stack, Text } from "@mantine/core"
+import { Stack, TextInput } from "@mantine/core"
 import DocComponentSimple from "./components/DocComponentSimple";
+import { MdDriveFileRenameOutline } from "react-icons/md";
+import { debounceFunc } from "../../../services/delayServices";
+import { useEffect, useState } from "react";
+import { getDocument } from "../../../services/docServices";
+import { useParams } from "react-router";
 
-type Doc = {
-    Id:string,
-    name:string,
-    content:string,
-    ownedBy:object,
-    dateCreated:Date,
-    lastEdit:Date,
-};
-type Prop = {
-    Doc:Doc,
+const saveTimer = 1200;
+const handleTitleChange = (title:string) => {
+    console.log("Title Changed! ",title);
 }
-const DocViewPage = (props:Prop) => {
-    const documentName = props.Doc?.name;
+const debounceTitleChange = debounceFunc(handleTitleChange,saveTimer);
+
+const DocViewPage = () => {
+    //const documentName = props.Doc?.name;
+    const {docid} = useParams();
+    const [docTitle, setDocTitle] = useState<string>("");
+    const [docContent,setDocContent] = useState<string>("");
+    const handleDocChange = (event:any) =>{
+        setDocTitle(event.currentTarget.value);
+        debounceTitleChange(event.currentTarget.value);
+    }
+    const loadDocument = async() => {
+        const document = await getDocument(docid??"");
+        setDocTitle(document.name);
+        setDocContent(document.content);
+    }
+
+    useEffect(()=>{loadDocument()},[]);
+
+
     return(
         <Stack w={"100%"} align="center" pt={"sm"}>
-            <Text>{documentName??"Insert Doc Name Here"}</Text>
-            <DocComponentSimple />
+            <TextInput value={docTitle} onChange={handleDocChange} leftSection={<MdDriveFileRenameOutline/>} w={"40%"} placeholder="enter document name..."/>
+            <DocComponentSimple content={docContent}/>
         </Stack>
     )
 }
