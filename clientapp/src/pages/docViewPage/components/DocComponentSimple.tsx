@@ -10,17 +10,23 @@ import '@mantine/core/styles.css';
 import '@mantine/tiptap/styles.css';
 import '@mantine/core/styles.css';
 import {debounceFunc} from "../../../../services/delayServices";
+import { updateDocument } from '../../../../services/docServices';
+import { type Doc, type updateDocDto } from '../../../../services/docServices';
 
 const saveTimer = 1200; //eg 3000 is 3 seconds
-const HandleChange = (editorText:string):void => {
+const HandleChange = (id:string,name:string,editorText:string):void => {
   console.log("Now Saving!",editorText);
+  const dto:updateDocDto = { id: id, name: name, content: editorText};
+  updateDocument(dto);
 }
 const debounceHandleChange = debounceFunc(HandleChange,saveTimer);
 
 type Prop = {
-  content:string
+  title:string,
+  content:string,
+  document:Doc
 }
-const DocComponentSimple = (props:Prop) => {
+const DocComponentSimple = (docProps:Prop) => {
   const editor = useEditor({
     shouldRerenderOnTransaction: true,
     extensions: [
@@ -31,9 +37,9 @@ const DocComponentSimple = (props:Prop) => {
       Highlight,
       TextAlign.configure({ types: ['heading', 'paragraph'] }),
     ],
-    content: props.content,
+    content: docProps.content,
     onUpdate(props) {
-      debounceHandleChange(props.editor.getHTML());
+      debounceHandleChange(docProps.document.id,docProps.title,props.editor.getHTML());
     },
   });
   
