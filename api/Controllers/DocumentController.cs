@@ -43,11 +43,11 @@ namespace api.Controllers
         public async Task<IActionResult> Create([FromBody] CreateDocDto createDocDto)
         {
             DocUser testUser = new DocUser { Email = "dummyEmail@email.com", UserName = "dummyUser" };
-            Document newDoc = new Document { Name = createDocDto.Name, Content = createDocDto.Content, DateCreated = DateTime.UtcNow, LastEdit = DateTime.UtcNow, OwnedBy = testUser };
+            Document newDoc = new Document { Id = new Guid(), Name = createDocDto.Name, Content = createDocDto.Content, DateCreated = DateTime.UtcNow, LastEdit = DateTime.UtcNow, OwnedBy = testUser };
 
             await _context.Documents.AddAsync(newDoc);
             await _context.SaveChangesAsync();
-            return Ok();
+            return Ok(newDoc.Id);
         }
         [HttpPut("update")]
         public async Task<IActionResult> Update([FromBody] UpdateDocDto updateDocDto)

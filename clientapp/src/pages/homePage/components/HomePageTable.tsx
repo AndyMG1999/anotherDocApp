@@ -6,7 +6,7 @@ import 'mantine-datatable/styles.layer.css';
 import { ActionIcon,Skeleton } from '@mantine/core';
 import { useNavigate } from 'react-router';
 
-const PAGE_SIZES = [5, 10, 20];
+const PAGE_SIZES = [10, 20, 50];
 type Props = {
     data:object[],
 }
@@ -17,14 +17,15 @@ const HomePageTable = (props:Props) => {
     const [pageSize, setPageSize] = useState(PAGE_SIZES[0]);
     const [records,setRecords] = useState(data.slice(0,pageSize));
     const [selectedRecords, setSelectedRecords] = useState<any[]>([]);
+    
     const navigate = useNavigate();
 
     const columns:any = [
         {accessor: "id", title: "",render: ()=>(<IoMdDocument size={"2em"} color="#bc49ffff"/>)},
-        {accessor: "name", title: "Document Name", width: '30em'},
-        {accessor: "ownedBy.userName", title: "Owned By"},
-        {accessor: "dateCreated", title: "Date Created"},
-        {accessor: "lastEdit", title: "Last Opened"},
+        {accessor: "name", title: "Document Name", width: '30em', sortable: true},
+        {accessor: "ownedBy.userName", title: "Owned By",sortable: true},
+        {accessor: "dateCreated", title: "Date Created",sortable: true},
+        {accessor: "lastEdit", title: "Last Opened",sortable: true},
         {accessor: "", render: ()=>(<ActionIcon variant="subtle"><HiOutlineDotsVertical/></ActionIcon>)},
     ]
 
@@ -55,7 +56,7 @@ const HomePageTable = (props:Props) => {
     shadow="md"
     withTableBorder
     borderRadius="lg"
-    onRowClick={({ record, index }) => {
+    onRowClick={({ record }) => {
         navigate(`/doc/${record.id}`);
     }}
     />

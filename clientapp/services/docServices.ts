@@ -12,7 +12,7 @@ type OwnedBy = {
     profileImage:any,
     emailConfirmed:boolean,
 }
-type updateDocDto = {
+export type updateDocDto = {
     id:string,
     name:string,
     content:string
@@ -26,7 +26,8 @@ export const createDocument = async(title:string) => {
         body: JSON.stringify({ name: title, content: ""}),
     });
     if(!response.ok) throw Error("Error Creating Document");
-    return response.ok;
+    const data:string = await response.json();
+    return data;
 }
 
 export const getAllDocuments = async() => {
