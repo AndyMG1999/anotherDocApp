@@ -1,6 +1,6 @@
 import { Group, Title, Box, Button, Image } from "@mantine/core"
 import { Link } from "react-router";
-import logo from "../../src/assets/Basic Doc Logo.svg";
+import logo from "/logo.svg";
 
 const Header = () => {
     const toolbarStyle = {
