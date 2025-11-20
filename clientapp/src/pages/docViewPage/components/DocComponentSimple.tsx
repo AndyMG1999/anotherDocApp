@@ -1,3 +1,4 @@
+import { useState,useRef } from 'react';
 import Highlight from '@tiptap/extension-highlight';
 import { useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
@@ -27,6 +28,8 @@ type Prop = {
   document:Doc
 }
 const DocComponentSimple = (docProps:Prop) => {
+  const inputRef = useRef<any>(null);
+  const [caretPosition, setCaretPosition] = useState(0);
   const editor = useEditor({
     shouldRerenderOnTransaction: true,
     extensions: [
@@ -39,6 +42,7 @@ const DocComponentSimple = (docProps:Prop) => {
     ],
     content: docProps.content,
     onUpdate(props) {
+      console.log("Caret postion:",props.editor.state.selection.$from);
       debounceHandleChange(docProps.document.id,docProps.title,props.editor.getHTML());
     },
   });
