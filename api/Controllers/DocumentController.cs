@@ -1,11 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using api.Contexts;
 using api.Dtos.DocDtos;
+using api.Hubs;
 using api.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 
 namespace api.Controllers
@@ -15,9 +20,13 @@ namespace api.Controllers
     public class DocumentController : Controller
     {
         private readonly DatabaseContext _context;
-        public DocumentController(DatabaseContext context)
+        private readonly UserManager<DocUser> _userManager;
+        private readonly IHubContext<DocHub> _docHubContext;
+        public DocumentController(DatabaseContext context, IHubContext<DocHub> docHubContext, UserManager<DocUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
+            _docHubContext = docHubContext;
         }
 
         [HttpGet("getAll")]
@@ -49,13 +58,35 @@ namespace api.Controllers
             await _context.SaveChangesAsync();
             return Ok(newDoc.Id);
         }
+        [Authorize]
         [HttpPut("update")]
         public async Task<IActionResult> Update([FromBody] UpdateDocDto updateDocDto)
         {
             Document document = await _context.Documents.FindAsync(updateDocDto.Id) ?? throw new Exception("Document Not Found");
-            
+            if (updateDocDto.CaretPositionDto == null) throw new Exception("Caret Position Not Given");
+
             document.Name = updateDocDto.Name;
             document.Content = updateDocDto.Content;
+            document.LastEdit = DateTime.UtcNow;
+
+            string? userEmail = User.FindFirst(ClaimTypes.Email)?.Value;
+            if (userEmail == null) return BadRequest();
+
+            DocUser? user = await _userManager.FindByEmailAsync(userEmail);
+            if (user == null) return BadRequest();
+
+            CaretPositionDto caretPositionDto = new() { UserName = user.UserName??userEmail, CaretPosition = updateDocDto.CaretPositionDto.CaretPosition };
+
+            await _context.SaveChangesAsync();
+            await _docHubContext.Clients.All.SendAsync("UpdateDoc", document, caretPositionDto);
+            return Ok();
+        }
+        [HttpPut("updateTitle")]
+        public async Task<IActionResult> UpdateTitle([FromBody] UpdateDocTitleDto updateDocDto)
+        {
+            Document document = await _context.Documents.FindAsync(updateDocDto.Id) ?? throw new Exception("Document Not Found");
+            
+            document.Name = updateDocDto.Name;
             document.LastEdit = DateTime.UtcNow;
 
             await _context.SaveChangesAsync();
