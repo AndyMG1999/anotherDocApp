@@ -1,8 +1,11 @@
 import { Group, Title, Box, Button, Image } from "@mantine/core"
 import { Link } from "react-router";
 import logo from "/logo.svg";
+import LoginModal from "./LoginModal";
+import { useState } from "react";
 
 const Header = () => {
+    const [openLoginModal,setOpenLoginModal] = useState<boolean>(false);
     const toolbarStyle = {
         zIndex: 10,
         background: 'rgba(224, 242, 255, 0.8)',
@@ -20,10 +23,11 @@ const Header = () => {
 
             <Group>
                 <Link to={"/"}><Button size="sm">My Docs</Button></Link>
-                <Button color="grape" size="sm">Login</Button>
+                <Button color="grape" size="sm" onClick={()=>{setOpenLoginModal(true)}}>Login</Button>
                 <Button color="violet" size="sm">Signup</Button>
             </Group>
         </Group>
+        <LoginModal opened={openLoginModal} onClose={()=>{setOpenLoginModal(false)}}/>
         </Box>
     )
 }
