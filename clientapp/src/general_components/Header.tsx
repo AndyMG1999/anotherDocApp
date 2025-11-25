@@ -20,13 +20,13 @@ const Header = () => {
         <Group w={"100%"} justify="space-between">
             <Group>
             <Image src={logo} h={"3em"} w={"auto"}/>
-            <Title>NotAnotherDoc</Title>
+            <Title>AnotherDocApp</Title>
             </Group>
 
             <Group>
                 <Link to={"/"}><Button size="sm">My Docs</Button></Link>
-                <Button color="grape" size="sm" onClick={()=>{setOpenLoginModal(true)}}>Login</Button>
-                <Button color="violet" size="sm" onClick={()=>{setOpenSignupModal(true)}}>Signup</Button>
+                <Button color="grape" size="sm" onClick={()=>{setOpenLoginModal(true)}}>Log in</Button>
+                <Button color="violet" size="sm" onClick={()=>{setOpenSignupModal(true)}}>Sign up</Button>
             </Group>
         </Group>
             <LoginModal opened={openLoginModal} onClose={()=>{setOpenLoginModal(false)}}/>

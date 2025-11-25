@@ -6,12 +6,12 @@ type Props = {
 } 
 const SignupModal = (props:Props) => {
     return(
-        <Modal title="Signup" opened={props.opened} onClose={props.onClose} centered overlayProps={{backgroundOpacity: 0.05,blur: 3,}}>
+        <Modal title="Sign up" opened={props.opened} onClose={props.onClose} centered overlayProps={{backgroundOpacity: 0.05,blur: 3,}}>
             <Stack>
                 <TextInput label="Email"/>
                 <TextInput label="Password"/>
                 <TextInput label="Retype Password"/>
-                <Button color="violet">Sign Up!</Button>
+                <Button color="violet">Sign up!</Button>
             </Stack>
         </Modal>
     );
