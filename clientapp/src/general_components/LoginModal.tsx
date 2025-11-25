@@ -10,7 +10,7 @@ const LoginModal = (props:Props) => {
             <Stack>
                 <TextInput label="Email"/>
                 <TextInput label="Password"/>
-                <Button color="grape">Login</Button>
+                <Button color="grape">Log In!</Button>
             </Stack>
         </Modal>
     );
