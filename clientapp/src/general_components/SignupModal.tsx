@@ -1,4 +1,4 @@
-import { Modal,Stack,Button,TextInput } from "@mantine/core";
+import { Modal,Stack,Button,TextInput,Alert } from "@mantine/core";
 
 type Props = {
     opened:boolean,
@@ -11,6 +11,8 @@ const SignupModal = (props:Props) => {
                 <TextInput label="Email"/>
                 <TextInput label="Password"/>
                 <TextInput label="Retype Password"/>
+                <Alert variant="light" color="red" radius="md" title="Error Creating Account"/>
+                <Alert variant="light" color="grape" radius="md" title="Account Created!"/>
                 <Button color="violet">Sign up!</Button>
             </Stack>
         </Modal>

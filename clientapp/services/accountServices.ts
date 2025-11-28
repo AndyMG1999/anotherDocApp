@@ -1,0 +1,36 @@
+type userInfoDto = {
+    userId:string,
+    userName:string,
+    email:string,
+    phoneNumber:string,
+    profileImage:any,
+    emailConfirmed:boolean,
+}
+
+export const registerUser = async (username:string,email:string,password:string) => {
+    const response = await fetch("http://localhost:5295/api/user/register",{
+        method: "POST",
+        headers:{ 'Content-Type': 'application/json', },
+        body: JSON.stringify({
+            userName: username,
+            email: email,
+            password: password,
+        })
+    });
+    if (!response.ok) throw Error("Error Registering User");
+    return response.ok;
+}
+
+export const loginUser = async (email:string,password:string) => {
+    const response = await fetch("http://localhost:5295/api/user/login",{
+        method: "POST",
+        headers:{ 'Content-Type': 'application/json', },
+        body: JSON.stringify({
+            email: email,
+            password: password,
+        })
+    });
+    if (!response.ok) throw Error("Error Logging in User");
+    const userData:userInfoDto = await response.json();
+    return userData;
+}

@@ -1,9 +1,9 @@
-import { Stack, TextInput, type MantineStyleProp } from "@mantine/core"
+import { Stack, TextInput, } from "@mantine/core"
 import DocComponentSimple from "./components/DocComponentSimple";
 import { MdDriveFileRenameOutline } from "react-icons/md";
 import { debounceFunc } from "../../../services/delayServices";
 import { useEffect, useState } from "react";
-import { getDocument, testAuth, updateDocumentTitle } from "../../../services/docServices";
+import { getDocument, updateDocumentTitle } from "../../../services/docServices";
 import { useParams } from "react-router";
 import { type Doc, type updateDocTitleDto, type caretPositionDto } from "../../../services/docServices";
 import { docConnection } from "../../../services/docServices";
