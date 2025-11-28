@@ -1,18 +1,19 @@
 import { createContext, useState } from "react";
+import { type userInfoDto } from "../services/accountServices";
 
 interface ApplicationContextType {
-  userInfo: any;
-  setUserInfo: (value: any) => void;
+  userInfo: userInfoDto | {};
+  setUserInfo: (value: userInfoDto) => void;
 }
 export const AppContext = createContext<ApplicationContextType>({
-    userInfo: null,
+    userInfo: {},
     setUserInfo: ()=>{},
 });
 
 type Prop = {
     children:React.ReactNode
 }
-const ApplicationContext = (prop:Prop) => {
+export const ApplicationContextProvider = (prop:Prop) => {
     const [userInfo,setUserInfo] = useState<any>(null);
     const contextValues = {
         userInfo: userInfo,
@@ -24,5 +25,3 @@ const ApplicationContext = (prop:Prop) => {
         </AppContext.Provider>
     )
 }
-
-export default ApplicationContext;
