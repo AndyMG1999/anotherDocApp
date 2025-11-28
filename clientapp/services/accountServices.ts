@@ -1,4 +1,4 @@
-type userInfoDto = {
+export type userInfoDto = {
     userId:string,
     userName:string,
     email:string,
@@ -17,7 +17,6 @@ export const registerUser = async (username:string,email:string,password:string)
             password: password,
         })
     });
-    if (!response.ok) throw Error("Error Registering User");
     return response.ok;
 }
 
@@ -33,4 +32,12 @@ export const loginUser = async (email:string,password:string) => {
     if (!response.ok) throw Error("Error Logging in User");
     const userData:userInfoDto = await response.json();
     return userData;
+}
+
+export const getUserInfo = async () => {
+    const response = await fetch("http://localhost:5295/api/user/getUserInfo");
+    if(!response.ok) return null;
+    const userInfo:userInfoDto = await response.json();
+    console.log("UserInfo:",userInfo);
+    return userInfo;
 }

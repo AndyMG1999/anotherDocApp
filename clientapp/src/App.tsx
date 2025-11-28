@@ -3,8 +3,11 @@ import { Routes,Route } from 'react-router';
 import HomePage from './pages/homePage/HomePage';
 import { Flex } from '@mantine/core';
 import DocViewPage from './pages/docViewPage/DocViewPage';
+import { getUserInfo } from '../services/accountServices';
+import { useEffect } from 'react';
 
 function App() {
+  useEffect(()=>{getUserInfo()},[]);
   return (
     <Flex direction={"column"}>
      <Header/>
