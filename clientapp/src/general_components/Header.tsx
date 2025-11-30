@@ -2,12 +2,16 @@ import { Group, Title, Box, Button, Image } from "@mantine/core"
 import { Link } from "react-router";
 import logo from "/logo.svg";
 import LoginModal from "./LoginModal";
-import { useState } from "react";
+import { useState,useContext } from "react";
 import SignupModal from "./SignupModal";
+import { AppContext } from "../../contexts/ApplicationContext";
+import UserToolbar from "./UserToolbar";
 
 const Header = () => {
     const [openLoginModal,setOpenLoginModal] = useState<boolean>(false);
     const [openSignupModal,setOpenSignupModal] = useState<boolean>(false);
+    const {userInfo} = useContext(AppContext);
+
     const toolbarStyle = {
         zIndex: 10,
         background: 'rgba(224, 242, 255, 0.8)',
@@ -23,11 +27,13 @@ const Header = () => {
             <Title>AnotherDocApp</Title>
             </Group>
 
+            {userInfo?
+            <UserToolbar userName={userInfo.userName} profileImage={null}/>
+            :
             <Group>
-                <Link to={"/"}><Button size="sm">My Docs</Button></Link>
                 <Button color="grape" size="sm" onClick={()=>{setOpenLoginModal(true)}}>Log in</Button>
                 <Button color="violet" size="sm" onClick={()=>{setOpenSignupModal(true)}}>Sign up</Button>
-            </Group>
+            </Group>}
         </Group>
             <LoginModal opened={openLoginModal} onClose={()=>{setOpenLoginModal(false)}}/>
             <SignupModal opened={openSignupModal} onClose={()=>{setOpenSignupModal(false)}}/>
