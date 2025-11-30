@@ -48,11 +48,17 @@ namespace api.Controllers
             Document document = await _context.Documents.FindAsync(id) ?? throw new Exception("Document Not Found");
             return Ok(document);
         }
+        [Authorize]
         [HttpPost("create")]
         public async Task<IActionResult> Create([FromBody] CreateDocDto createDocDto)
         {
-            DocUser testUser = new DocUser { Email = "dummyEmail@email.com", UserName = "dummyUser" };
-            Document newDoc = new Document { Id = new Guid(), Name = createDocDto.Name, Content = createDocDto.Content, DateCreated = DateTime.UtcNow, LastEdit = DateTime.UtcNow, OwnedBy = testUser };
+            string? userEmail = User.FindFirst(ClaimTypes.Email)?.Value;
+            if (userEmail == null) return BadRequest();
+
+            DocUser? user = await _userManager.FindByEmailAsync(userEmail);
+            if (user == null) return BadRequest();
+            
+            Document newDoc = new Document { Id = new Guid(), Name = createDocDto.Name, Content = createDocDto.Content, DateCreated = DateTime.UtcNow, LastEdit = DateTime.UtcNow, OwnedBy = user };
 
             await _context.Documents.AddAsync(newDoc);
             await _context.SaveChangesAsync();
