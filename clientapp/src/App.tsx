@@ -4,10 +4,16 @@ import HomePage from './pages/homePage/HomePage';
 import { Flex } from '@mantine/core';
 import DocViewPage from './pages/docViewPage/DocViewPage';
 import { getUserInfo } from '../services/accountServices';
-import { useEffect } from 'react';
+import { useEffect,useContext } from 'react';
+import { AppContext } from '../contexts/ApplicationContext';
 
 function App() {
-  useEffect(()=>{getUserInfo()},[]);
+  const {setUserInfo} = useContext(AppContext);
+  const checkIfLoggedIn = async () => {
+    const userInfo = await getUserInfo();
+    if(userInfo) setUserInfo(userInfo);
+  }
+  useEffect(()=>{checkIfLoggedIn()},[]);
   return (
     <Flex direction={"column"}>
      <Header/>

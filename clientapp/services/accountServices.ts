@@ -35,9 +35,14 @@ export const loginUser = async (email:string,password:string) => {
 }
 
 export const getUserInfo = async () => {
-    const response = await fetch("http://localhost:5295/api/user/getUserInfo");
-    if(!response.ok) return null;
-    const userInfo:userInfoDto = await response.json();
-    console.log("UserInfo:",userInfo);
-    return userInfo;
+    try{
+        const response = await fetch("http://localhost:5295/api/user/getUserInfo",{credentials: "include"});
+        if(!response.ok) return null;
+        const userInfo:userInfoDto = await response.json();
+        console.log("UserInfo:",userInfo);
+        return userInfo;
+    }
+    catch (error){
+        console.log("No Account Logged In");
+    }
 }

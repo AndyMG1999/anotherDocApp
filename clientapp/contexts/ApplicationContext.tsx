@@ -2,11 +2,11 @@ import { createContext, useState } from "react";
 import { type userInfoDto } from "../services/accountServices";
 
 interface ApplicationContextType {
-  userInfo: userInfoDto | {};
+  userInfo: userInfoDto | undefined;
   setUserInfo: (value: userInfoDto) => void;
 }
 export const AppContext = createContext<ApplicationContextType>({
-    userInfo: {},
+    userInfo: undefined,
     setUserInfo: ()=>{},
 });
 

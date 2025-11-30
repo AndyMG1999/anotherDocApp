@@ -33,6 +33,7 @@ export type updateDocTitleDto = {
 export const createDocument = async(title:string) => {
     const response = await fetch("http://localhost:5295/api/doc/create",{
         method: "POST",
+        credentials: "include",
         headers: {
         'Content-Type': 'application/json',
         },
