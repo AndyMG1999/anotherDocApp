@@ -22,15 +22,17 @@ const LoginModal = (props:Props) => {
     const onSubmit = async (values:{email:string,password:string}) => {
         const userInfo:userInfoDto = await loginUser(values.email,values.password);
         if(!userInfo) setOpenErrorAlert(true);
+        form.reset();
         setUserInfo(userInfo);
         console.log("Logged Into:",userInfo);
+        props.onClose();
     };
     return(
         <Modal title="Log in" opened={props.opened} onClose={props.onClose} centered overlayProps={{backgroundOpacity: 0.05,blur: 3,}}>
             <form onSubmit={form.onSubmit(onSubmit)}>
             <Stack>
                 <TextInput label="Email" key={form.key("email")} {...form.getInputProps("email")}/>
-                <TextInput label="Password" key={form.key("password")} {...form.getInputProps("password")}/>
+                <TextInput label="Password" key={form.key("password")} {...form.getInputProps("password")} type="password"/>
                 {openErrorAlert && <Alert variant="light" color="red" radius="md" title="Username or Password is Incorrect"/>}
                 <Button color="grape" type="submit">Log in!</Button>
             </Stack>
