@@ -54,10 +54,10 @@ const DocComponentSimple = memo((docProps:Prop) => {
       let currentCaretPos = editor.state.selection.from;
       editor.commands.setContent(docProps.content);
       const editorSize = editor.state.doc.content.size;
-      if(currentCaretPos < 0 || currentCaretPos > editorSize) currentCaretPos = 0;
-      //editor.commands.setTextSelection(currentCaretPos);
+      if(currentCaretPos < 0 || currentCaretPos > editorSize) currentCaretPos = editorSize;
+      editor.commands.setTextSelection(currentCaretPos);
     }
-  }, [docProps.content]);
+  }, [docProps.content,editor]);
 
   useEffect(()=>{
     let coordArr:any = [];
