@@ -1,5 +1,4 @@
 import { Group, Title, Box, Button, Image } from "@mantine/core"
-import { Link } from "react-router";
 import logo from "/logo.svg";
 import LoginModal from "./LoginModal";
 import { useState,useContext } from "react";
